@@ -1,8 +1,10 @@
 package com.example.mybmi;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
+        myListener();
 
         rgSex.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rbMale) {
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         appple.setOnCheckedChangeListener((buttonView, isChecked) -> getFruits());
         banana.setOnCheckedChangeListener((buttonView, isChecked) -> getFruits());
         orange.setOnCheckedChangeListener((buttonView, isChecked) -> getFruits());
+    }
+
+    private void myListener() {
     }
 
     private void getFruits() {
@@ -64,14 +71,36 @@ public class MainActivity extends AppCompatActivity {
         show.setText("我喜歡吃" + msg);
     }
 
+    public void showDialog(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("BMI");
+        double bmi = getBmi();
+        String result = getString(R.string.strShowbmi) + bmi;
+        builder.setMessage(result);
+        builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "你好", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "取消", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.show();
+    }
+
 
     public void calcBMI(View view) {
 
         double bmi = getBmi();
 
         String result = getString(R.string.strShowbmi) + bmi;
+        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 
-       show.setText(result);
+//       show.setText(result);
 
     }
 
